@@ -77,9 +77,7 @@
      *  AVVideoComposition是由一组AVVideoCompositionInstruction对象格式定义的指令组成的
      */
     AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    CGFloat durSec = CMTimeGetSeconds(self.composition.duration);
-    CMTime timeDur = CMTimeMake(durSec * TIME_SCALE, TIME_SCALE);
-    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, timeDur);
+    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, [composition duration]);
     
     /**
      *  AVVideoCompositionLayerInstruction：用于定义对给定视频轨道应用的模糊、变形和裁剪效果
@@ -100,7 +98,7 @@
     _exportSession.outputFileType = AVFileTypeQuickTimeMovie;
     _exportSession.shouldOptimizeForNetworkUse = YES;
     _exportSession.videoComposition = videoComposition;
-    _exportSession.timeRange = CMTimeRangeMake(kCMTimeZero, timeDur);
+    _exportSession.timeRange = CMTimeRangeMake(kCMTimeZero, [composition duration]);
     
     __weak typeof(self) weakSelf = self;
     [_exportSession exportAsynchronouslyWithCompletionHandler:^{
